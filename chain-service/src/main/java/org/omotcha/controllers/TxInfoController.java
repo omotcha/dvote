@@ -25,7 +25,7 @@ public class TxInfoController {
 
     @GetMapping("/listnumber")
     @ApiOperation("get transactions list by block num")
-    public List<Transaction> getTxListByBlockNum(Long blockNum) throws Exception{
+    public List<org.omotcha.entities.Transaction> getTxListByBlockNum(Long blockNum) throws Exception{
         return txInfoService.getTxListByBlockNum(blockNum);
     }
 

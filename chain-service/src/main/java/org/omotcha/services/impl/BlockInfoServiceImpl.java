@@ -29,8 +29,7 @@ public class BlockInfoServiceImpl implements BlockInfoService {
         EthBlock ethBlock = web3j.ethGetBlockByNumber(defaultBlockParameterNumber,true).sendAsync().get();
         EthBlock.Block block = ethBlock.getBlock();
         Gson gson = new Gson();
-        String info = gson.toJson(block);
-        return info;
+        return gson.toJson(block);
     }
 
     @Override
