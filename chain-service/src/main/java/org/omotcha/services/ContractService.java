@@ -9,4 +9,6 @@ public interface ContractService {
     ChainResultResp load(String addr);
 
     ChainResultResp invoke(String addr, String method);
+
+    DeployReq getDeployReq();
 }
