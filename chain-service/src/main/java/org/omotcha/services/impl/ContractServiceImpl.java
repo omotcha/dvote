@@ -9,11 +9,16 @@ import org.springframework.stereotype.Service;
 import org.web3j.crypto.Credentials;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.http.HttpService;
+import org.web3j.tx.gas.ContractGasProvider;
+import org.web3j.tx.gas.DefaultGasProvider;
 
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ContractServiceImpl implements ContractService {
@@ -37,8 +42,40 @@ public class ContractServiceImpl implements ContractService {
     private String url;
 
     @Override
-    public ChainResultResp deploy(DeployReq req) {
-        return null;
+    public ChainResultResp deploy() {
+        ChainResultResp resp = new ChainResultResp();
+        Vote contract = null;
+        try{
+            web3j = Web3j.build(new HttpService("http://"+url));
+            BigInteger gasPrice = web3j.ethGasPrice().send().getGasPrice();
+            ContractGasProvider provider = new DefaultGasProvider(){
+                @Override
+                public BigInteger getGasPrice(String contractFunc){
+                    return gasPrice;
+                }
+
+                @Override
+                public BigInteger getGasLimit(String contractFunc){
+                    return BigInteger.valueOf(1000000);
+                }
+            };
+            List<byte[]> params = new ArrayList<>();
+            params.add("4100000000000000000000000000000000000000000000000000000000000000".getBytes());
+            params.add("4200000000000000000000000000000000000000000000000000000000000000".getBytes());
+            contract = Vote.deploy(web3j, credentials, provider, params).sendAsync().get();
+        }catch (Exception e){
+            resp.setSuccess(false);
+            resp.setErr(e.getMessage());
+        }
+        if(contract!=null){
+            resp.setSuccess(true);
+            resp.setResult(contract.getContractAddress());
+            // how to set the transaction hash for the response?
+        }else {
+            resp.setSuccess(false);
+            resp.setErr("error deploying the contract");
+        }
+        return resp;
     }
 
     @Override
@@ -51,18 +88,4 @@ public class ContractServiceImpl implements ContractService {
         return null;
     }
 
-    @Override
-    public DeployReq getDeployReq() {
-        web3j = Web3j.build(new HttpService("http://"+url));
-        Vote vote;
-
-        DeployReq req = new DeployReq();
-        req.setCOIN_NAME("eth");
-        req.setGAS_PRICE(Vote.GAS_PRICE);
-        req.setSYMBOL("eth");
-        req.setCREDENTIALS(credentials);
-
-
-        return req;
-    }
 }

@@ -23,6 +23,6 @@ public class ContractController {
 
     @GetMapping("/deploy")
     public ChainResultResp deploy(){
-        return contractService.deploy(contractService.getDeployReq());
+        return contractService.deploy();
     }
 }
