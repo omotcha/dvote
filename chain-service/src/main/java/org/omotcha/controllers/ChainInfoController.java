@@ -18,8 +18,6 @@ public class ChainInfoController {
     @Autowired
     private ChainInfoService chainInfoService;
 
-    private Chain chain;
-
     @GetMapping("/latestblocknum")
     @ApiOperation("get latest block num")
     public BigInteger getLatestBlockNum() throws Exception{
