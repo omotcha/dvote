@@ -2,7 +2,6 @@ package org.omotcha.services.impl;
 
 import org.omotcha.entities.Chain;
 import org.omotcha.services.ChainInfoService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.web3j.protocol.Web3j;

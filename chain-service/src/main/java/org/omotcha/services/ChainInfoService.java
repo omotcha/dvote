@@ -6,9 +6,9 @@ import java.math.BigInteger;
 
 public interface ChainInfoService {
 
-    public BigInteger getLatestBlockNum() throws Exception;
+    BigInteger getLatestBlockNum() throws Exception;
 
-    public Chain getChainOverall() throws Exception;
+    Chain getChainOverall() throws Exception;
 
 
 }
