@@ -97,6 +97,24 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin>
+                <!-- plugin usage ::> mvn web3j:generate-sources -->
+                <groupId>org.web3j</groupId>
+                <artifactId>web3j-maven-plugin</artifactId>
+                <version>4.8.7</version>
+                <configuration>
+                    <packageName>org.omotcha.jcontracts</packageName>
+                    <soliditySourceFiles>
+                        <directory>src/main/resources/solc</directory>
+                        <includes>
+                            <include>**/*.sol</include>
+                        </includes>
+                    </soliditySourceFiles>
+                    <outputDirectory>
+                        <java>src/main/java</java>
+                    </outputDirectory>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
