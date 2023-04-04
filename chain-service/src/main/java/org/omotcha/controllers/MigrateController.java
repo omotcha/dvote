@@ -3,10 +3,7 @@ package org.omotcha.controllers;
 import io.swagger.annotations.Api;
 import org.omotcha.services.MigrateService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/migrate")
@@ -18,5 +15,10 @@ public class MigrateController {
     @PostMapping("/chain")
     public boolean migrateChain(){
         return migrateService.migrateChain();
+    }
+
+    @PutMapping("/block")
+    public boolean migrateBlock(){
+        return migrateService.migrateBlock();
     }
 }
