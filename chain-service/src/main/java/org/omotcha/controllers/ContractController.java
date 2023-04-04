@@ -1,6 +1,7 @@
 package org.omotcha.controllers;
 
 import io.swagger.annotations.Api;
+import org.omotcha.jcontracts.Vote;
 import org.omotcha.model.resp.ChainResultResp;
 import org.omotcha.services.ContractService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,10 @@ public class ContractController {
     @GetMapping("/deploy")
     public ChainResultResp deploy(){
         return contractService.deploy();
+    }
+
+    @GetMapping("/load")
+    public Vote load(String addr){
+        return contractService.load(addr);
     }
 }

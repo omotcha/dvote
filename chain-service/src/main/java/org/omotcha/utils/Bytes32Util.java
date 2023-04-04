@@ -1,5 +1,6 @@
 package org.omotcha.utils;
 
+import jnr.ffi.annotations.In;
 import org.jetbrains.annotations.NotNull;
 
 public class Bytes32Util {
@@ -24,5 +25,21 @@ public class Bytes32Util {
             ret[i] = (byte)value;
         }
         return ret;
+    }
+
+    public String bytes322str(byte[] bytes){
+        //length check
+        StringBuilder s = new StringBuilder();
+        if(bytes.length!=32){
+            return null;
+        }
+        for (byte aByte : bytes) {
+            String hv = Integer.toHexString(aByte & 0xFF);
+            if (hv.length() < 2) {
+                s.append(0);
+            }
+            s.append(hv);
+        }
+        return s.toString();
     }
 }

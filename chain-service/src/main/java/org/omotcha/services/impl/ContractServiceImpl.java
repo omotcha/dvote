@@ -80,13 +80,25 @@ public class ContractServiceImpl implements ContractService {
     }
 
     @Override
-    public ChainResultResp load(String addr) {
-        return null;
-    }
+    public Vote load(String addr) {
+        try{
+            web3j = Web3j.build(new HttpService("http://"+url));
+            BigInteger gasPrice = web3j.ethGasPrice().send().getGasPrice();
+            ContractGasProvider provider = new DefaultGasProvider(){
+                @Override
+                public BigInteger getGasPrice(String contractFunc){
+                    return gasPrice;
+                }
 
-    @Override
-    public ChainResultResp invoke(String addr, String method) {
-        return null;
+                @Override
+                public BigInteger getGasLimit(String contractFunc){
+                    return BigInteger.valueOf(1000000);
+                }
+            };
+            return Vote.load(addr,web3j,credentials,provider);
+        }catch (Exception e){
+            return null;
+        }
     }
 
 }
