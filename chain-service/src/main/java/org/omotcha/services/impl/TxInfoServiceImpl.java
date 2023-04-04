@@ -49,18 +49,22 @@ public class TxInfoServiceImpl implements TxInfoService {
         DefaultBlockParameterNumber defaultBlockParameterNumber = new DefaultBlockParameterNumber(blockNum);
         EthBlock ethBlock = web3j.ethGetBlockByNumber(defaultBlockParameterNumber,true).sendAsync().get();
         List<EthBlock.TransactionResult> transactionResults = ethBlock.getBlock().getTransactions();
+        Transaction _tx;
         List<org.omotcha.entities.Transaction> ret = new ArrayList<>();
-        transactionResults.forEach(txInfo->{
-            Transaction _tx = (Transaction)txInfo;
-            org.omotcha.entities.Transaction r = new org.omotcha.entities.Transaction();
-            r.setHeight(_tx.getBlockNumber());
-            r.setChainID(BigInteger.valueOf(_tx.getChainId()));
-            r.setHash(_tx.getHash());
-            r.setTo(_tx.getTo());
-            r.setFrom(_tx.getFrom());
-            r.setRaw(_tx.getRaw());
-            ret.add(r);
-        });
+        for(EthBlock.TransactionResult txInfo:transactionResults){
+            if(txInfo instanceof Transaction){
+                _tx = (Transaction) txInfo.get();
+
+                org.omotcha.entities.Transaction r = new org.omotcha.entities.Transaction();
+                r.setHeight(_tx.getBlockNumber());
+//                r.setChainID(BigInteger.valueOf(_tx.getChainId()));
+                r.setHash(_tx.getHash());
+                r.setTo(_tx.getTo());
+                r.setFrom(_tx.getFrom());
+                r.setRaw(_tx.getRaw());
+                ret.add(r);
+            }
+        }
         return ret;
     }
 
@@ -87,7 +91,7 @@ public class TxInfoServiceImpl implements TxInfoService {
         if(optionalTransaction.isPresent()){
             Transaction _tx = optionalTransaction.get();
             ret.setHeight(_tx.getBlockNumber());
-            ret.setChainID(BigInteger.valueOf(_tx.getChainId()));
+//            ret.setChainID(BigInteger.valueOf(_tx.getChainId()));
             ret.setHash(_tx.getHash());
             ret.setTo(_tx.getTo());
             ret.setFrom(_tx.getFrom());

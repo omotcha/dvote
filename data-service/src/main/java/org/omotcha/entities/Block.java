@@ -14,7 +14,7 @@ import java.util.Date;
 @Data
 @TableName("block")
 public class Block {
-    @TableId("height")
+    @TableField("height")
     private BigInteger height;          //block height
     @TableField("createTime")
     private BigInteger time;            //block create time

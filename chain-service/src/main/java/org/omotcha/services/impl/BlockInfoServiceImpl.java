@@ -2,13 +2,18 @@ package org.omotcha.services.impl;
 
 import com.google.gson.Gson;
 import org.omotcha.entities.Block;
+import org.omotcha.entities.Transaction;
 import org.omotcha.services.BlockInfoService;
+import org.omotcha.services.TxInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.web3j.protocol.Web3j;
 import org.web3j.protocol.core.DefaultBlockParameterNumber;
 import org.web3j.protocol.core.methods.response.EthBlock;
 import org.web3j.protocol.http.HttpService;
+
+import java.util.List;
 
 @Service
 public class BlockInfoServiceImpl implements BlockInfoService {
@@ -48,4 +53,5 @@ public class BlockInfoServiceImpl implements BlockInfoService {
         ret.setTxNum(block.getTransactions().size());
         return ret;
     }
+
 }

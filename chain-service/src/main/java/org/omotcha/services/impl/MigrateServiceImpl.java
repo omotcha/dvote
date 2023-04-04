@@ -3,15 +3,19 @@ package org.omotcha.services.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.omotcha.entities.Block;
 import org.omotcha.entities.Chain;
+import org.omotcha.entities.Transaction;
 import org.omotcha.mappers.IBlockMapper;
 import org.omotcha.mappers.IChainMapper;
+import org.omotcha.mappers.ITxMapper;
 import org.omotcha.services.BlockInfoService;
 import org.omotcha.services.ChainInfoService;
 import org.omotcha.services.MigrateService;
+import org.omotcha.services.TxInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @Service
 public class MigrateServiceImpl implements MigrateService {
@@ -23,10 +27,16 @@ public class MigrateServiceImpl implements MigrateService {
     private BlockInfoService blockInfoService;
 
     @Autowired
+    private TxInfoService txInfoService;
+
+    @Autowired
     private IChainMapper chainMapper;
 
     @Autowired
     private IBlockMapper blockMapper;
+
+    @Autowired
+    private ITxMapper txMapper;
     @Override
     public boolean migrateChain() {
         try{
@@ -59,6 +69,10 @@ public class MigrateServiceImpl implements MigrateService {
 
     public void migrateSingleBlock(BigInteger height) throws Exception{
         Block block = blockInfoService.getBlockOverall(height.longValue());
+        List<Transaction> txlist = txInfoService.getTxListByBlockNum(height.longValue());
+        for (Transaction tx : txlist) {
+            txMapper.insert(tx);
+        }
         blockMapper.insert(block);
     }
 }
