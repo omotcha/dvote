@@ -1,5 +1,6 @@
 package org.omotcha.services.impl;
 
+import com.google.gson.Gson;
 import org.omotcha.entities.Chain;
 import org.omotcha.services.ChainInfoService;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,6 +10,7 @@ import org.web3j.protocol.core.methods.response.*;
 import org.web3j.protocol.http.HttpService;
 
 import java.math.BigInteger;
+import java.util.List;
 
 @Service
 public class ChainInfoServiceImpl implements ChainInfoService {
@@ -35,12 +37,14 @@ public class ChainInfoServiceImpl implements ChainInfoService {
     public Chain getChainOverall() throws Exception {
         web3j = Web3j.build(new HttpService("http://"+url));
         Chain ret = new Chain();
+        Gson gson = new Gson();
         // set latest block num
         EthBlockNumber ethBlockNumber = web3j.ethBlockNumber().sendAsync().get();
         ret.setLatestBlockNum(ethBlockNumber.getBlockNumber());
         // set accounts
         EthAccounts ethAccounts = web3j.ethAccounts().sendAsync().get();
-        ret.setAccounts(ethAccounts.getAccounts());
+        List<String> accounts = ethAccounts.getAccounts();
+        ret.setAccounts(gson.toJson(accounts));
         // set gas price
         EthGasPrice ethGasPrice = web3j.ethGasPrice().sendAsync().get();
         ret.setGasPrice(ethGasPrice.getGasPrice());

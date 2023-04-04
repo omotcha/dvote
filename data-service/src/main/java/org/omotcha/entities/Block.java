@@ -14,6 +14,6 @@ public class Block {
     private BigInteger time;            //block create time
     private String hash;                //block hash
     private BigInteger size;            //block size
-    private Integer txNum;              //number fo tx
+    private Integer txNum;              //number of tx
 
 }
