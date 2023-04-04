@@ -1,9 +1,9 @@
 package org.omotcha.services.impl;
 
 import org.omotcha.jcontracts.Vote;
-import org.omotcha.model.req.DeployReq;
 import org.omotcha.model.resp.ChainResultResp;
 import org.omotcha.services.ContractService;
+import org.omotcha.utils.Bytes32Util;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.web3j.crypto.Credentials;
@@ -60,8 +60,9 @@ public class ContractServiceImpl implements ContractService {
                 }
             };
             List<byte[]> params = new ArrayList<>();
-            params.add("4100000000000000000000000000000000000000000000000000000000000000".getBytes());
-            params.add("4200000000000000000000000000000000000000000000000000000000000000".getBytes());
+            Bytes32Util bytes32Util = new Bytes32Util();
+            params.add(bytes32Util.str2bytes32("4100000000000000000000000000000000000000000000000000000000000000"));
+            params.add(bytes32Util.str2bytes32("4200000000000000000000000000000000000000000000000000000000000000"));
             contract = Vote.deploy(web3j, credentials, provider, params).sendAsync().get();
         }catch (Exception e){
             resp.setSuccess(false);
